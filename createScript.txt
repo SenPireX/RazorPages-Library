@@ -1,0 +1,25 @@
+md Library
+cd Library
+md Library.Application
+cd Library.Application
+dotnet new classlib
+dotnet add package Microsoft.EntityFrameworkCore --version 8.*
+dotnet add package Microsoft.EntityFrameworkCore.Sqlite --version 8.*
+dotnet add package Microsoft.EntityFrameworkCore.Proxies --version 8.*
+dotnet add package Bogus --version 35.*
+cd ..
+md Library.Test
+cd Library.Test
+dotnet new xunit
+dotnet add reference ..\Library.Application
+cd ..
+md Library.Webapp
+cd Library.Webapp
+dotnet new webapp
+dotnet add reference ..\Library.Application
+cd ..
+dotnet new sln
+dotnet sln add Library.Webapp
+dotnet sln add Library.Application
+dotnet sln add Library.Test
+start Library.sln
