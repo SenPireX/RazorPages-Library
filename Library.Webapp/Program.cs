@@ -1,7 +1,10 @@
+using Library.Application.Infrastructure;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddSingleton<LibraryContext>();
 
 var app = builder.Build();
 
