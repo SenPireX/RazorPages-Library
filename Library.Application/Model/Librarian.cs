@@ -5,12 +5,11 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace Library.Application.Model;
 
-public class Librarian //: IEntity<int>
+public class Librarian
 {
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
     
-    [BsonId] [BsonRepresentation(BsonType.ObjectId)] public string Id { get; set; }
-    public Guid Guid { get; private set; }
+    [BsonId] [BsonRepresentation(BsonType.String)] public Guid Guid { get; private set; }
     [MaxLength(16)] public string FirstName { get; set; }
     [MaxLength(16)] public string LastName { get; set; }
     [MaxLength(64)] public string Address { get; set; }

@@ -1,5 +1,4 @@
 ﻿using Bogus;
-using Microsoft.EntityFrameworkCore;
 using Library.Application.Model;
 using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
@@ -25,6 +24,7 @@ public class LibraryContext
     public IMongoCollection<Librarian> Librarians => _db.GetCollection<Librarian>("librarians");
 
     public MongoClient GetClient() => _client;
+    public IMongoDatabase GetDatabase() => _db;
     
     public void Seed(ICryptService cryptService)
     {
@@ -49,8 +49,7 @@ public class LibraryContext
                 return new Model.Library
                 (
                     name: name,
-                    url: f.Internet.Url().OrDefault(f, 0.25f),
-                    manager: new User
+                    member: new User
                     (
                         username: username,
                         salt: salt,
@@ -104,8 +103,7 @@ public class LibraryContext
                 return new Loan(
                     book: book,
                     library: library,
-                    member: member,
-                    loanDate: DateTime.UtcNow
+                    member: member
                 );
             })
             .Generate(80)

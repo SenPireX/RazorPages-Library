@@ -12,12 +12,11 @@ namespace Library.Application.Model;
 
 public enum Usertype { Owner = 1, Admin }
 
-public class User //: IEntity<int>
+public class User
 {
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-
-    [BsonId] [BsonRepresentation(BsonType.ObjectId)] public string Id { get; private set; } 
-    public Guid Guid { get; private set; }
+    
+    [BsonId] [BsonRepresentation(BsonType.String)] public Guid Guid { get; private set; }
     [MaxLength(255)] public string Username { get; set; }
     [MaxLength(44)] public string Salt { get; set; } /* 256 bit Hash as base64 */
     [MaxLength(88)] public string PasswordHash { get; set; } /* 512 bit SHA512 Hash as base64 */

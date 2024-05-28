@@ -1,14 +1,19 @@
 {
   "version": 2,
-  "dgSpecHash": "Qwf1Xi21vBzz/Y3H9ssbsUxz781vbqsDTTFXXhrwHvTQNCzUbDMyi2n+Y0thopQYsXObWPutGazVytQz61pWGQ==",
+  "dgSpecHash": "HlO9k73TzTWJP4Xc1yeY2xoOVoJsGEXsxiNv4c+6p1U8Ll3fK6XXjbXx3I/oa5IhMMaxt5xJzLWC4NHjM5q6Dw==",
   "success": true,
   "projectFilePath": "C:\\Users\\matea\\Desktop\\Coding\\Library\\Library.Webapp\\Library.Webapp.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\matea\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
+    "C:\\Users\\matea\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
     "C:\\Users\\matea\\.nuget\\packages\\awssdk.core\\3.7.100.14\\awssdk.core.3.7.100.14.nupkg.sha512",
     "C:\\Users\\matea\\.nuget\\packages\\awssdk.securitytoken\\3.7.100.14\\awssdk.securitytoken.3.7.100.14.nupkg.sha512",
     "C:\\Users\\matea\\.nuget\\packages\\bogus\\35.5.1\\bogus.35.5.1.nupkg.sha512",
     "C:\\Users\\matea\\.nuget\\packages\\castle.core\\5.1.1\\castle.core.5.1.1.nupkg.sha512",
+    "C:\\Users\\matea\\.nuget\\packages\\csvhelper\\32.0.3\\csvhelper.32.0.3.nupkg.sha512",
     "C:\\Users\\matea\\.nuget\\packages\\dnsclient\\1.6.1\\dnsclient.1.6.1.nupkg.sha512",
+    "C:\\Users\\matea\\.nuget\\packages\\exceldatareader\\3.6.0\\exceldatareader.3.6.0.nupkg.sha512",
+    "C:\\Users\\matea\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
     "C:\\Users\\matea\\.nuget\\packages\\microsoft.data.sqlite.core\\8.0.5\\microsoft.data.sqlite.core.8.0.5.nupkg.sha512",
     "C:\\Users\\matea\\.nuget\\packages\\microsoft.entityframeworkcore\\8.0.5\\microsoft.entityframeworkcore.8.0.5.nupkg.sha512",
     "C:\\Users\\matea\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\8.0.5\\microsoft.entityframeworkcore.abstractions.8.0.5.nupkg.sha512",
@@ -51,6 +56,7 @@
     "C:\\Users\\matea\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\5.0.0\\system.runtime.compilerservices.unsafe.5.0.0.nupkg.sha512",
     "C:\\Users\\matea\\.nuget\\packages\\system.security.accesscontrol\\5.0.0\\system.security.accesscontrol.5.0.0.nupkg.sha512",
     "C:\\Users\\matea\\.nuget\\packages\\system.security.principal.windows\\5.0.0\\system.security.principal.windows.5.0.0.nupkg.sha512",
+    "C:\\Users\\matea\\.nuget\\packages\\system.text.encoding.codepages\\8.0.0\\system.text.encoding.codepages.8.0.0.nupkg.sha512",
     "C:\\Users\\matea\\.nuget\\packages\\system.text.encodings.web\\8.0.0\\system.text.encodings.web.8.0.0.nupkg.sha512",
     "C:\\Users\\matea\\.nuget\\packages\\system.text.json\\8.0.0\\system.text.json.8.0.0.nupkg.sha512",
     "C:\\Users\\matea\\.nuget\\packages\\zstdsharp.port\\0.7.3\\zstdsharp.port.0.7.3.nupkg.sha512"

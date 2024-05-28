@@ -164,3 +164,7 @@ C:\Users\matea\Desktop\Coding\Library\Library.Test\bin\Debug\net8.0\Microsoft.Ex
 C:\Users\matea\Desktop\Coding\Library\Library.Test\bin\Debug\net8.0\Microsoft.Extensions.FileProviders.Abstractions.dll
 C:\Users\matea\Desktop\Coding\Library\Library.Test\bin\Debug\net8.0\Microsoft.Extensions.FileProviders.Physical.dll
 C:\Users\matea\Desktop\Coding\Library\Library.Test\bin\Debug\net8.0\Microsoft.Extensions.FileSystemGlobbing.dll
+C:\Users\matea\Desktop\Coding\Library\Library.Test\bin\Debug\net8.0\AutoMapper.dll
+C:\Users\matea\Desktop\Coding\Library\Library.Test\bin\Debug\net8.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+C:\Users\matea\Desktop\Coding\Library\Library.Test\bin\Debug\net8.0\CsvHelper.dll
+C:\Users\matea\Desktop\Coding\Library\Library.Test\bin\Debug\net8.0\ExcelDataReader.dll

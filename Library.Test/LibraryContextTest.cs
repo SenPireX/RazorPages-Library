@@ -21,23 +21,23 @@ public class LibraryContextTest : DatabaseTest
     public void EnsureCreatedConnectionSuccessTest()
     {
         var client = _db.GetClient();
-        //_testOutputHelper.WriteLine("Counted Collections: " + client.GetDatabase("library").ListCollections().ToList().Count);
+        _testOutputHelper.WriteLine("Counted Collections: " + client.GetDatabase("library").ListCollections().ToList().Count);
         
-        /*client.GetDatabase("library").DropCollection("books");
+        client.GetDatabase("library").DropCollection("books");
         client.GetDatabase("library").DropCollection("librarians");
         client.GetDatabase("library").DropCollection("libraries");
         client.GetDatabase("library").DropCollection("loans");
         client.GetDatabase("library").DropCollection("members");
         client.GetDatabase("library").DropCollection("users");
-        _testOutputHelper.WriteLine("Counted Collections: " + client.GetDatabase("library").ListCollections().ToList().Count);*/
+        _testOutputHelper.WriteLine("Counted Collections: " + client.GetDatabase("library").ListCollections().ToList().Count);
         
-        /*client.GetDatabase("library").CreateCollection("books");
+        client.GetDatabase("library").CreateCollection("books");
         client.GetDatabase("library").CreateCollection("librarians");
         client.GetDatabase("library").CreateCollection("libraries");
         client.GetDatabase("library").CreateCollection("loans");
         client.GetDatabase("library").CreateCollection("members");
         client.GetDatabase("library").CreateCollection("users");
-        _testOutputHelper.WriteLine("Counted Collections: " + client.GetDatabase("library").ListCollections().ToList().Count);*/
+        _testOutputHelper.WriteLine("Counted Collections: " + client.GetDatabase("library").ListCollections().ToList().Count);
         
         var databaseNames = client.ListDatabaseNames().ToList();
         Assert.Contains("library", databaseNames);
