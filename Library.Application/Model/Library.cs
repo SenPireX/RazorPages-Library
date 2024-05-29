@@ -14,6 +14,7 @@ public class Library
     public User? Member { get; set; }
 
     public ICollection<Book> Books { get; } = new List<Book>();
+    public ICollection<Loan> Loans { get; } = new List<Loan>();
     
     public Library(string name, User? member = null)
     {

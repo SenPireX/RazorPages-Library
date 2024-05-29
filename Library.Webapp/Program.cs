@@ -1,28 +1,59 @@
+using Library.Application.Dto;
 using Library.Application.Infrastructure;
+using Library.Application.Infrastructure.Repositories;
+using Library.Application.Model;
+using Library.Webapp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddRazorPages();
+// *************************************************************************************************
+// SERVICES
+// *************************************************************************************************
 builder.Services.AddSingleton<LibraryContext>();
 
-var app = builder.Build();
+// * Repositories **********************************************************************************
+builder.Services.AddTransient<LibraryRepository>();
+builder.Services.AddTransient<LoanRepository>();
+builder.Services.AddTransient<UserRepository>();
+builder.Services.AddTransient<BookRepository>();
 
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+// * Services for authentication *******************************************************************
+// To access httpcontext in services
+builder.Services.AddHttpContextAccessor();
+// Hashing methods
+builder.Services.AddTransient<ICryptService, CryptService>();
+builder.Services.AddTransient<AuthService>(provider => new AuthService(
+    isDevelopment: builder.Environment.IsDevelopment(),
+    db: provider.GetRequiredService<LibraryContext>(),
+    crypt: provider.GetRequiredService<ICryptService>(),
+    httpContextAccessor: provider.GetRequiredService<IHttpContextAccessor>()));
+builder.Services.AddAuthentication(
+        Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(o =>
+    {
+        o.LoginPath = "/User/Login";
+        o.AccessDeniedPath = "/User/AccessDenied";
+    });
+builder.Services.AddAuthorization(o =>
 {
-    app.UseExceptionHandler("/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
-}
+    o.AddPolicy("OwnerOrAdminRole", p => p.RequireRole(Usertype.Owner.ToString(), Usertype.Admin.ToString()));
+});
 
+
+// * Other Services ********************************************************************************
+builder.Services.AddAutoMapper(typeof(MappingProfile));
+builder.Services.AddRazorPages();
+
+// *************************************************************************************************
+// MIDDLEWARE
+// *************************************************************************************************
+
+var app = builder.Build();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
-app.UseRouting();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapRazorPages();
-
 app.Run();

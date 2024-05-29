@@ -25,10 +25,10 @@ public class LibraryContext
 
     public MongoClient GetClient() => _client;
     public IMongoDatabase GetDatabase() => _db;
-    
+
     public void Seed(ICryptService cryptService)
     {
-        Randomizer.Seed = new Random(1938);
+        Randomizer.Seed = new Random(1887);
 
         var adminSalt = cryptService.GenerateSecret(256);
         var admin = new User
@@ -43,7 +43,7 @@ public class LibraryContext
         var i = 0;
         var libraries = new Faker<Model.Library>("de").CustomInstantiator(f =>
             {
-                var name = f.Company.CompanyName();
+                var name = f.Address.City() + " City Library";
                 var salt = cryptService.GenerateSecret(256);
                 var username = $"library{++i:000}";
                 return new Model.Library
@@ -64,9 +64,9 @@ public class LibraryContext
 
         var books = new Faker<Book>("de").CustomInstantiator(f => new Book(
                 title: f.Random.Words(2),
-                author: f.Person.FullName,
-                genre: f.Random.Word(),
-                publishedDate: f.Date.Past()
+                author: f.Name.FullName(),
+                genre: f.PickRandom<BookGenre>(),
+                publishedDate: f.Date.PastDateOnly()
             ))
             .Generate(200)
             .ToList();
@@ -77,7 +77,7 @@ public class LibraryContext
                 lastName: f.Name.LastName(),
                 address: f.Address.FullAddress(),
                 email: f.Person.Email,
-                phoneNumber: f.Phone.PhoneNumber()
+                phoneNumber: f.Phone.PhoneNumber("+##-###-#######")
             ))
             .Generate(80)
             .ToList();
@@ -88,7 +88,7 @@ public class LibraryContext
                 lastName: f.Name.LastName(),
                 address: f.Address.FullAddress(),
                 email: f.Person.Email,
-                phoneNumber: f.Phone.PhoneNumber()
+                phoneNumber: f.Phone.PhoneNumber("+##-###-#######")
             ))
             .Generate(20)
             .ToList();

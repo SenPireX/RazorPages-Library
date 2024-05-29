@@ -15,23 +15,22 @@
     <thead>
     <tr>
         <th>Name</th>
-        <th>Bücher</th>
+        <th>Bücher vorhanden</th>
         <th>Aktionen</th>
     </tr>
     </thead>
     <tbody>
-    @foreach (var s in Model.Libraries)
+    @foreach (var l in Model.Libraries)
     {
-        
         <tr>
-            <td>@s.Name</td>
-            <td>@s.BooksCount</td>
+            <td>@l.Name</td>
+            <td>@l.BooksCount</td>
             <td>
-                @if (Model.CanEditStore(s.Guid))
+                @if (Model.CanEditLibrary(l.Guid))
                 {
-                    <a asp-page="/Libraries/Details" asp-route-guid="@s.Guid"><i class="fas fa-info-circle"></i></a>
-                    <a class="ms-2" asp-page="/Libraries/Edit" asp-route-guid="@s.Guid"><i class="fas fa-edit"></i></a>
-                    <a class="ms-2" asp-page="/Libraries/Delete" asp-route-guid="@s.Guid"><i class="fas fa-trash-alt"></i></a>
+                    <a asp-page="/Libraries/Details" asp-route-guid="@l.Guid"><i class="fas fa-info-circle"></i></a>
+                    <a class="ms-2" asp-page="/Libraries/Edit" asp-route-guid="@l.Guid"><i class="fas fa-edit"></i></a>
+                    <a class="ms-2" asp-page="/Libraries/Delete" asp-route-guid="@l.Guid"><i class="fas fa-trash-alt"></i></a>
                 }
             </td>
         </tr>

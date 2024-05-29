@@ -3,13 +3,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Store Manager</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/lib/fontawesome/all.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/Library.Webapp.styles.css" asp-append-version="true" />
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Library</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="~/lib/fontawesome/all.min.css"/>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="~/Library.Webapp.styles.css" asp-append-version="true"/>
     <script src="~/lib/fontawesome/all.min.js"></script>
     @RenderSection("head", false)
 </head>
@@ -28,26 +28,28 @@
                         <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/User/Login">Login</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/User/Index">Liste aller User</a>
+                        <a class="nav-link text-dark" asp-area="" asp-page="/User/Index">Users</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-page="/Libraries/Index">Libraries</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/Books/Index">Bücher</a>
+                        <a class="nav-link text-dark" asp-area="" asp-page="/Books/Index">Books</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/Import/Index">Importieren</a>
-                    </li>
+                    <!--li class="nav-item" TODO>
+                    <a class="nav-link text-dark" asp-area="" asp-page="/Import/Index">Importieren</a>
+                    </!--li-->
+                    @if (!AuthService.IsAuthenticated)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/User/Login">Login</a>
+                        </li>
+                    }
                 </ul>
                 <div>
                     @if (AuthService.IsAuthenticated)
                     {
-                    <p>Angemeldet als @AuthService.Username
-                        <small class="ms-2"><a asp-page="/User/Logout">Logout</a></small></p>
+                        <p>Angemeldet als @AuthService.Username<small class="ms-2"><a asp-page="/User/Logout">Logout</a></small></p>
                     }
                 </div>
             </div>
@@ -63,7 +65,7 @@
 
 <footer class="pb-1 pt-1 border-top footer text-muted fixed-bottom">
     <div class="container">
-        <img src="~/schullogo.png" style="height:32px;" class="me-3" />
+        <img src="~/schullogo.png" style="height:32px;" class="me-3"/>
         <strong class="pe-3">
             HTL Spengergasse - Abteilung Informatik
         </strong>

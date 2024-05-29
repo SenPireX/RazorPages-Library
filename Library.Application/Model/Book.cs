@@ -11,11 +11,11 @@ public class Book
     [BsonId] [BsonRepresentation(BsonType.String)] public Guid Guid { get; private set; }
     [MaxLength(64)] public string Title { get; set; }
     [MaxLength(32)] public string Author { get; set; }
-    [MaxLength(32)] public string Genre { get; set; }
-    public DateTime PublishedDate { get; set; }
+    public BookGenre Genre { get; set; }
+    public DateOnly PublishedDate { get; set; }
     public bool IsLoaned { get; set; }
     
-    public Book(string title, string author, string genre, DateTime publishedDate)
+    public Book(string title, string author, BookGenre genre, DateOnly publishedDate)
     {
         Guid = Guid.NewGuid();
         Title = title;

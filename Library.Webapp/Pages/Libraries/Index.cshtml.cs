@@ -23,10 +23,10 @@ public class IndexModel : PageModel
 
     public void OnGet()
     {
-        Libraries = _library.GetLibrariesWithBooksCount();
+        //Libraries = _library.GetLibrariesWithBooksCount();
     }
 
-    public bool CanEditStore(Guid libraryGuid) =>
+    public bool CanEditLibrary(Guid libraryGuid) =>
         _authService.IsAdmin
-        || Libraries.FirstOrDefault(s => s.Guid == libraryGuid)?.Manager?.Username == _authService.Username;
+        || Libraries.FirstOrDefault(s => s.Guid == libraryGuid)?.Member?.Username == _authService.Username;
 }

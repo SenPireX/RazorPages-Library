@@ -19,7 +19,7 @@ namespace Library.Webapp.Pages.User
 
         public IEnumerable<Application.Model.User> Users =>
             _users.Set
-                .Include(u => u.Stores)
+                .Include(u => u.Libraries)
                 .OrderBy(u => u.Usertype).ThenBy(u => u.Username);
         
         public void OnGet()

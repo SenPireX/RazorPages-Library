@@ -1,19 +1,54 @@
-﻿@page
-@model Library.Webapp.Pages.Libraries.Details
+﻿@page "{guid}"
+@model Library.Webapp.Pages.Libraries.DetailsModel
 
-@{
-    Layout = null;
-}
+<h3>Details zur Library @Model.Library.Name</h3>
 
-<!DOCTYPE html>
+<h4>Loan a book</h4>
 
-<html>
-<head>
-    <title></title>
-</head>
-<body>
-<div>
-    
-</div>
-</body>
-</html>
+<form method="post" asp-page-handler="NewLoan">
+    <div class="row">
+        <div class="col-6">
+            <label asp-for="NewLoan.BookGuid">Book</label>
+            <select class="form-select" asp-items="@Model.BookSelectList" asp-for="NewLoan.BookGuid"></select>
+        </div>
+    </div>
+    <div class="text-danger" asp-validation-summary=ModelOnly></div>
+    <button class="mt-2 btn btn-primary">Speichern</button>
+</form>
+
+
+<h4>Liste aller Bücher</h4>
+<form method="post" asp-page-handler="EditLoan">
+    <table class="table table-sm">
+        <thead>
+        <tr>
+            <th>Book</th>
+            <th>Action</th>
+            <th>Löschen?</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var l in Model.Loans.OrderBy(l => l.Book.Title))
+        {
+            <tr>
+                <td></td>
+                <td></td>
+                <td>
+                    <input type="hidden" asp-for="EditLoans[l.Guid].Guid"/>
+                    <input class="form-control" asp-for="EditLoans[l.Guid].DueDate"/>
+                    <small>
+                        <span class="text-danger" asp-validation-for="EditLoans[l.Guid].DueDate"></span>
+                    </small>
+                </td>
+                <td>
+                    <button class="btn btn-primary" type="submit" asp-page-handler="EditLoan" asp-route-offerGuid="@l.Guid">Save</button>
+                </td>
+                <td>
+                    <input class="form-check-input" asp-for="LoansToDelete[l.Guid]"/>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    <button type="submit" class="btn btn-danger" asp-page-handler="Delete">Delete selected</button>
+</form>
