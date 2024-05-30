@@ -1,16 +1,22 @@
 ﻿using Library.Application.Model;
+using Microsoft.Extensions.Logging;
 
 namespace Library.Application.Infrastructure.Repositories;
 
 public class LoanRepository : Repository<Loan>
 {
-    public LoanRepository(LibraryContext db) : base(db, collectionName: "loans") {}
+    private readonly ILogger<Loan> _logger;
 
-    public override Task<(bool success, string message)> InsertAsync(Loan loan)
+    public LoanRepository(LibraryContext db, ILogger<Loan> logger) : base(db, collectionName: "loans", logger)
+    {
+        _logger = logger;
+    }
+
+    public override (bool success, string message) Insert(Loan loan)
     {
         loan.LoanDate = DateTime.UtcNow;
-        return base.InsertAsync(loan);
+        return base.Insert(loan);
     }
     
-    //TODO? public InsertAsync
+    //TODO? public Insert
 }

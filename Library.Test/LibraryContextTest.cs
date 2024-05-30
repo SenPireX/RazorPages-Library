@@ -48,9 +48,6 @@ public class LibraryContextTest : DatabaseTest
     {
         _db.Seed(new CryptService());
         
-        Assert.True(_db.Libraries.AsQueryable().Any());
-        _testOutputHelper.WriteLine($"Generated {_db.Libraries.EstimatedDocumentCount()} libraries");
-        
         Assert.True(_db.Books.AsQueryable().Any());
         _testOutputHelper.WriteLine($"Generated {_db.Books.EstimatedDocumentCount()} books");
         
@@ -59,6 +56,9 @@ public class LibraryContextTest : DatabaseTest
         
         Assert.True(_db.Librarians.AsQueryable().Any());
         _testOutputHelper.WriteLine($"Generated {_db.Librarians.EstimatedDocumentCount()} librarians");
+        
+        Assert.True(_db.Libraries.AsQueryable().Any());
+        _testOutputHelper.WriteLine($"Generated {_db.Libraries.EstimatedDocumentCount()} libraries");
         
         Assert.True(_db.Loans.AsQueryable().Any());
         _testOutputHelper.WriteLine($"Generated {_db.Loans.EstimatedDocumentCount()} loans");

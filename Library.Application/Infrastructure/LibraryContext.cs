@@ -40,39 +40,7 @@ public class LibraryContext
         );
         Users.InsertOne(admin);
 
-        var i = 0;
-        var libraries = new Faker<Model.Library>("de").CustomInstantiator(f =>
-            {
-                var name = f.Address.City() + " City Library";
-                var salt = cryptService.GenerateSecret(256);
-                var username = $"library{++i:000}";
-                return new Model.Library
-                (
-                    name: name,
-                    member: new User
-                    (
-                        username: username,
-                        salt: salt,
-                        passwordHash: cryptService.GenerateHash(key: salt, "1234"),
-                        usertype: Usertype.Owner
-                    )
-                );
-            })
-            .Generate(10)
-            .ToList();
-        Libraries.InsertMany(libraries);
-
-        var books = new Faker<Book>("de").CustomInstantiator(f => new Book(
-                title: f.Random.Words(2),
-                author: f.Name.FullName(),
-                genre: f.PickRandom<BookGenre>(),
-                publishedDate: f.Date.PastDateOnly()
-            ))
-            .Generate(200)
-            .ToList();
-        Books.InsertMany(books);
-
-        var members = new Faker<Member>("de").CustomInstantiator(f => new Member(
+        var members = new Faker<Member>("en").CustomInstantiator(f => new Member(
                 firstName: f.Name.FirstName(),
                 lastName: f.Name.LastName(),
                 address: f.Address.FullAddress(),
@@ -83,7 +51,7 @@ public class LibraryContext
             .ToList();
         Members.InsertMany(members);
 
-        var librarians = new Faker<Librarian>("de").CustomInstantiator(f => new Librarian(
+        var librarians = new Faker<Librarian>("en").CustomInstantiator(f => new Librarian(
                 firstName: f.Name.FirstName(),
                 lastName: f.Name.LastName(),
                 address: f.Address.FullAddress(),
@@ -94,7 +62,52 @@ public class LibraryContext
             .ToList();
         Librarians.InsertMany(librarians);
 
-        var loans = new Faker<Loan>("de").CustomInstantiator(f =>
+        
+        var books = new List<Book>();
+        var i = 0;
+        var libraries = new Faker<Model.Library>("en").CustomInstantiator(f =>
+            {
+                var name = f.Address.City() + " City Library";
+                var salt = cryptService.GenerateSecret(256);
+                var username = $"library{++i:000}";
+
+                var member = new User
+                (
+                    username: username,
+                    salt: salt,
+                    passwordHash: cryptService.GenerateHash(key: salt, "1234"),
+                    usertype: Usertype.Owner
+                );
+                Users.InsertOne(member);
+
+                var library = new Model.Library
+                (
+                    name: name,
+                    books: [],
+                    member: member
+                );
+
+                var booksList = new Faker<Book>("en").CustomInstantiator(faker => new Book(
+                        libraryGuid: library.Guid,
+                        title: faker.Random.Words(2),
+                        author: faker.Name.FullName(),
+                        genre: faker.PickRandom<BookGenre>(),
+                        publishedDate: faker.Date.PastDateOnly()
+                    ))
+                    .Generate(f.Random.Int(20, 50))
+                    .ToList();
+
+                books.AddRange(booksList);
+                library.Books = booksList;
+
+                return library;
+            })
+            .Generate(10)
+            .ToList();
+        Libraries.InsertMany(libraries);
+        Books.InsertMany(books);
+
+        var loans = new Faker<Loan>("en").CustomInstantiator(f =>
             {
                 var library = f.Random.ListItem(libraries);
                 var book = f.Random.ListItem(books);

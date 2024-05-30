@@ -26,32 +26,32 @@ public class EditModel : PageModel
 
     [BindProperty] public LibraryDto Library { get; set; } = null!;
 
-    public async Task<IActionResult> OnPostAsync(Guid guid)
+    public IActionResult OnPost(Guid guid)
     {
         if (!ModelState.IsValid)
         {
             return Page();
         }
 
-        var library = await _libraries.FindByGuidAsync(guid);
+        var library = _libraries.FindByGuid(guid);
         if (library is null)
         {
             return RedirectToPage("/Libraries/Index");
         }
 
         _mapper.Map(Library, library);
-        var (success, message) = await _libraries.UpdateAsync(library, guid);
+        var (success, message) = _libraries.Update(library, guid);
         if (!success)
         {
             ModelState.AddModelError("", message);
-            return Page();
+            return Page(); 
         }
         return RedirectToPage("/Libraries/Index");
     }
 
-    public async Task<IActionResult> OnGetAsync(Guid guid)
+    public IActionResult OnGet(Guid guid)
     {
-        var library = await _libraries.FindByGuidAsync(guid);
+        var library = _libraries.FindByGuid(guid);
         if (library is null)
         {
             return RedirectToPage("/Libraries/Index");

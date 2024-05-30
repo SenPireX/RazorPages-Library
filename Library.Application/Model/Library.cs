@@ -12,14 +12,14 @@ public class Library
     [BsonId] [BsonRepresentation(BsonType.String)] public Guid Guid { get; private set; }
     [MaxLength(32)] public string Name { get; set; }
     public User? Member { get; set; }
-
-    public ICollection<Book> Books { get; } = new List<Book>();
-    public ICollection<Loan> Loans { get; } = new List<Loan>();
+    public ICollection<Book> Books { get; set; } = new List<Book>();
+    public ICollection<Loan> Loans { get; set; } = new List<Loan>();
     
-    public Library(string name, User? member = null)
+    public Library(string name, List<Book> books, User? member = null)
     {
         Guid = Guid.NewGuid();
         Name = name;
+        Books = books;
         Member = member;
     }
     

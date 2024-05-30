@@ -1,4 +1,5 @@
 ﻿using Library.Application.Infrastructure.Repositories;
+using Library.Application.Model;
 using Library.Webapp.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -20,13 +21,15 @@ public class IndexModel : PageModel
 
     public IReadOnlyList<LibraryRepository.LibrariesWithBooksCount> Libraries { get; private set; } =
         new List<LibraryRepository.LibrariesWithBooksCount>();
-
+    
     public void OnGet()
     {
-        //Libraries = _library.GetLibrariesWithBooksCount();
+        Libraries = _library.GetLibrariesWithBooksCount();
     }
 
+    //public bool BookIsLoaned(Guid libraryGuid, Guid bookGuid) => Libraries.Select(l => l.)
+    
     public bool CanEditLibrary(Guid libraryGuid) =>
         _authService.IsAdmin
-        || Libraries.FirstOrDefault(s => s.Guid == libraryGuid)?.Member?.Username == _authService.Username;
+        || Libraries.FirstOrDefault(l => l.Guid == libraryGuid)?.Member?.Username == _authService.Username;
 }

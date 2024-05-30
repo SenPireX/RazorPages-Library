@@ -1,4 +1,5 @@
 ﻿using Library.Application.Model;
+using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
@@ -10,13 +11,19 @@ public class LibraryRepository : Repository<Model.Library>
     public record LibrariesWithBooksCount(
         Guid Guid,
         string Name,
-        User? Member,
-        int BooksCount
+        //List<Book> Books,
+        int BooksCount,
+        User? Member
     );
 
-    public LibraryRepository(LibraryContext db) : base(db, collectionName: "libraries") {}
+    private readonly ILogger<Model.Library> _logger;
+    
+    public LibraryRepository(LibraryContext db, ILogger<Model.Library> logger) : base(db, collectionName: "libraries", logger)
+    {
+        _logger = logger;
+    }
 
-    /*public IReadOnlyList<LibrariesWithBooksCount> GetLibrariesWithBooksCount()
+    public IReadOnlyList<LibrariesWithBooksCount> GetLibrariesWithBooksCount()
     {
         var aggregation = _collection.Aggregate()
             .Lookup<Book, BsonDocument>(
@@ -27,20 +34,32 @@ public class LibraryRepository : Repository<Model.Library>
             )
             .Project(new BsonDocument
             {
-                { "Guid", 1 },
+                { "_id", 1 },
                 { "Name", 1 },
-                { "Member", 1 },
-                { "BooksCount", new BsonDocument("$size", "$Books") }
+                //{ "Books", 1 },
+                { "BooksCount" , new BsonDocument( "$size", "$Books") },
+                { "Member", 1 }
+            })
+            .ToList();
+        
+        var result = aggregation.Select(doc =>
+            {
+                var guid = doc["_id"].IsGuid ? doc["_id"].AsGuid : Guid.Parse(doc["_id"].AsString);
+                //var booksList = doc["Books"].AsBsonArray
+                  //  .Select(bookDoc => BsonSerializer.Deserialize<Book>(bookDoc.AsBsonDocument)).ToList();
+                
+                return new LibrariesWithBooksCount(
+                    Guid: guid,
+                    Name: doc["Name"].AsString,
+                    //Books: booksList,
+                    BooksCount: doc["BooksCount"].AsInt32,
+                    Member: doc.Contains("Member") && doc["Member"].IsBsonNull
+                        ? null
+                        : BsonSerializer.Deserialize<User>(doc["Member"].AsBsonDocument)
+                );
             })
             .ToList();
 
-        var result = aggregation.Select(doc => new LibrariesWithBooksCount(
-            Guid: doc["Guid"].AsGuid,
-            Name: doc["Name"].AsString,
-            Member: doc.Contains("Member") && doc["Member"].IsBsonNull ? null : BsonSerializer.Deserialize<User>(doc["Member"].AsBsonDocument),
-            BooksCount: doc["BooksCount"].AsInt32
-        )).ToList();
-
         return result;
-    }*/
+    }
 }

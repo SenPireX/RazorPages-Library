@@ -2,7 +2,7 @@
 @model Library.Webapp.Pages.User.IndexModel
 <h3>User table</h3>
 
-<p>Diese Tabelle zeigt alle angelegten User.</p>
+<p>Diese Tabelle zeigt alle angelegten User (Admin Only).</p>
 <table class="table table-sm">
     <thead>
         <tr>
@@ -21,7 +21,8 @@
                 <td>@u.Usertype</td>
                 <td><pre>@u.Salt</pre></td>
                 <td><pre>@u.PasswordHash</pre></td>
-                <td>@string.Join(", ", u.Libraries.Select(s=>s.Name).OrderBy(s=>s))</td>
+                <!--td>@string.Join(", ", u.Libraries.Select(s=>s.Name).OrderBy(s=>s))</!--td-->
+                <td>@string.Join(", ", u.Libraries.Select(l=> l.Name))</td>
             </tr>
         }
     </tbody>

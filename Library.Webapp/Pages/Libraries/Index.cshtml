@@ -2,7 +2,7 @@
 @model Library.Webapp.Pages.Libraries.IndexModel
 
 <h3>Libraries in der Datenbank</h3>
-<p>@Model.Libraries.Count Libraries gefunden. Erstellt um @DateTime.Now.ToString("HH:mm").</p>
+<p>@Model.Libraries.Count Libraries found. Erstellt um @DateTime.Now.ToString("HH:mm").</p>
 
 @if (!string.IsNullOrEmpty(Model.Message))
 {
@@ -15,8 +15,8 @@
     <thead>
     <tr>
         <th>Name</th>
-        <th>Bücher vorhanden</th>
-        <th>Aktionen</th>
+        <th>Books available</th>
+        <th>Actions</th>
     </tr>
     </thead>
     <tbody>
@@ -26,13 +26,19 @@
             <td>@l.Name</td>
             <td>@l.BooksCount</td>
             <td>
+                <a asp-page="/Libraries/Details" asp-route-guid="@l.Guid"><i class="fas fa-info-circle"></i></a>
+                <a class="ms-2" asp-page="/Libraries/Edit" asp-route-guid="@l.Guid"><i class="fas fa-edit"></i></a>
+                <a class="ms-2" asp-page="/Libraries/Delete" asp-route-guid="@l.Guid"><i class="fas fa-trash-alt"></i></a>
+            </td>
+            
+            <!--td>
                 @if (Model.CanEditLibrary(l.Guid))
                 {
                     <a asp-page="/Libraries/Details" asp-route-guid="@l.Guid"><i class="fas fa-info-circle"></i></a>
                     <a class="ms-2" asp-page="/Libraries/Edit" asp-route-guid="@l.Guid"><i class="fas fa-edit"></i></a>
                     <a class="ms-2" asp-page="/Libraries/Delete" asp-route-guid="@l.Guid"><i class="fas fa-trash-alt"></i></a>
                 }
-            </td>
+            </!--td-->
         </tr>
     }
     </tbody>
