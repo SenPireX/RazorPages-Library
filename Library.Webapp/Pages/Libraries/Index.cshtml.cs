@@ -26,8 +26,6 @@ public class IndexModel : PageModel
     {
         Libraries = _library.GetLibrariesWithBooksCount();
     }
-
-    //public bool BookIsLoaned(Guid libraryGuid, Guid bookGuid) => Libraries.Select(l => l.)
     
     public bool CanEditLibrary(Guid libraryGuid) =>
         _authService.IsAdmin

@@ -2,8 +2,9 @@
 
 public record LoanDto(
     Guid Guid,
-    DateTime LoanDate,
-    DateTime DueDate,
     Guid BookGuid,
-    Guid LibraryGuid
+    Guid LibraryGuid,
+    Guid MemberGuid,
+    DateTime LoanDate,
+    DateTime DueDate
 );

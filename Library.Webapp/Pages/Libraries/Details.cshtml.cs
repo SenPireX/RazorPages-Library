@@ -26,7 +26,8 @@ namespace Library.Webapp.Pages.Libraries
         private readonly IMapper _mapper;
         private readonly AuthService _authService;
 
-        public DetailsModel(IMapper mapper, LibraryRepository libraries, LoanRepository loans, BookRepository books, AuthService authService)
+        public DetailsModel(IMapper mapper, LibraryRepository libraries, LoanRepository loans, BookRepository books,
+            AuthService authService)
         {
             _mapper = mapper;
             _libraries = libraries;
@@ -35,51 +36,67 @@ namespace Library.Webapp.Pages.Libraries
             _authService = authService;
         }
 
-        [FromRoute]
-        public Guid Guid { get; set; }
+        [FromRoute] public Guid Guid { get; set; }
         public LoanDto NewLoan { get; set; } = default!;
         public Library.Application.Model.Library Library { get; private set; } = default!;
         public IReadOnlyList<Loan> Loans { get; private set; } = new List<Loan>();
         public Dictionary<Guid, LoanDto> EditLoans { get; set; } = new();
         public Dictionary<Guid, bool> LoansToDelete { get; set; } = new();
+
         public IEnumerable<SelectListItem> BookSelectList =>
             _books.Set.OrderBy(p => p.Title).Select(p => new SelectListItem(p.Title, p.Guid.ToString()));
 
-        /*public IActionResult OnPostEditLoan(Guid guid, Guid loanGuid, Dictionary<Guid, LoanDto> editLoans)
+        public IActionResult OnPostEditLoan(Guid guid, Guid loanGuid, Dictionary<Guid, LoanDto> editLoans)
         {
-            if (!ModelState.IsValid) { return Page(); }
-            var loan = _loans.FindByGuidAsync(loanGuid);
-            if (loan is null) { return RedirectToPage(); }
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
+
+            var loan = _loans.FindByGuid(loanGuid);
+            if (loan is null)
+            {
+                return RedirectToPage();
+            }
+
             _mapper.Map(editLoans[loanGuid], loan);
-            var (success, message) = _loans.UpdateAsync(loan, guid);
+            var (success, message) = _loans.Update(loan, guid);
             if (!success)
             {
                 ModelState.AddModelError("", message!);
                 return Page();
             }
+
             return RedirectToPage();
         }
-        
-        //TODO
+
         public IActionResult OnPostNewLoan(Guid guid, LoanDto newLoan)
         {
-            if (!ModelState.IsValid) { return Page(); }
-            var (success, message) = _loans.InsertAsync(
-                price: newLoan.Price, soldOut: newLoan.SoldOut,
-                productGuid: newLoan.ProductGuid,
-                storeGuid: guid);
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
+
+            var (success, message) = _loans.Insert(
+                bookGuid: newLoan.BookGuid,
+                libraryGuid: newLoan.LibraryGuid,
+                memberGuid: newLoan.MemberGuid,
+                loanDate: newLoan.LoanDate,
+                dueDate: newLoan.DueDate
+            );
             if (!success)
             {
                 ModelState.AddModelError("", message!);
                 return Page();
             }
+
             return RedirectToPage();
         }
 
         public IActionResult OnPostDelete(Guid guid, Dictionary<Guid, bool> loansToDelete)
         {
-            var loansDb = _loans.Set.Where(o => o.Library.Guid == guid).ToDictionary(o => o.Guid, o => o);
-            var loanGuids = loansToDelete.Where(o => o.Value == true).Select(o => o.Key);
+            var loansDb = _loans.Set.Where(l => l.Library.Guid == guid).ToDictionary(l => l.Guid, l => l);
+            var loanGuids = loansToDelete.Where(o => o.Value == true).Select(l => l.Key);
 
             foreach (var l in loanGuids)
             {
@@ -87,15 +104,14 @@ namespace Library.Webapp.Pages.Libraries
                 {
                     continue;
                 }
-                _loans.DeleteAsync(guid); //TODO
+
+                _loans.Delete(guid); // TODO -  Statt guid loan?
             }
             return RedirectToPage();
         }
-        public IActionResult OnGet(Guid guid)
-        {
-            return Page();
-        }*/
-        
+
+        public IActionResult OnGet(Guid guid) { return Page(); }
+
         public override void OnPageHandlerExecuting(PageHandlerExecutingContext context)
         {
             var library = _libraries.Set
@@ -108,12 +124,14 @@ namespace Library.Webapp.Pages.Libraries
                 context.Result = RedirectToPage("/Libraries/Index");
                 return;
             }
+
             var username = _authService.Username;
             if (!_authService.HasRole("Admin") && username != library.Member?.Username)
             {
                 context.Result = new ForbidResult();
                 return;
             }
+
             Library = library;
             Loans = library.Loans.ToList();
             LoansToDelete = Loans.ToDictionary(o => o.Guid, o => false);

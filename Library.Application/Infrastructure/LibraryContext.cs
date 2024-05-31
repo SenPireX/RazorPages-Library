@@ -112,11 +112,15 @@ public class LibraryContext
                 var library = f.Random.ListItem(libraries);
                 var book = f.Random.ListItem(books);
                 var member = f.Random.ListItem(members);
+                var loanDate = DateTime.UtcNow;
+                var dueDate = loanDate.AddDays(14);
 
                 return new Loan(
                     book: book,
                     library: library,
-                    member: member
+                    member: member,
+                    loanDate: loanDate,
+                    dueDate: dueDate
                 );
             })
             .Generate(80)

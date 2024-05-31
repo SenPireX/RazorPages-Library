@@ -19,7 +19,7 @@ public class Loan
     public DateTime DueDate { get; set; }
     public DateTime? ReturnDate { get; set; }
 
-    public Loan(Book book, Library library, Member member)
+    public Loan(Book book, Library library, Member member, DateTime loanDate, DateTime dueDate)
     {
         Guid = Guid.NewGuid();
         Book = book;
@@ -28,8 +28,8 @@ public class Loan
         Library = library;
         MemberGuid = member.Guid;
         Member = member;
-        LoanDate = DateTime.UtcNow;
-        DueDate = LoanDate.AddDays(14);
+        LoanDate = loanDate;
+        DueDate = dueDate;
     }
 
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.

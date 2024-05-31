@@ -1,7 +1,7 @@
 ﻿@page "{guid}"
 @model Library.Webapp.Pages.Libraries.DetailsModel
 
-<h3>Details zur Library @Model.Library.Name</h3>
+<h3>Details of Library @Model.Library.Name</h3>
 
 <h4>Loan a book</h4>
 
@@ -13,17 +13,17 @@
         </div>
     </div>
     <div class="text-danger" asp-validation-summary=ModelOnly></div>
-    <button class="mt-2 btn btn-primary">Speichern</button>
+    <button class="mt-2 btn btn-primary">Save</button>
 </form>
 
-<h4>Liste aller Bücher</h4>
+<h4>List of all Books</h4>
 <form method="post" asp-page-handler="EditLoan">
     <table class="table table-sm">
         <thead>
         <tr>
             <th>Book</th>
             <th>Action</th>
-            <th>Löschen?</th>
+            <th>Delete?</th>
         </tr>
         </thead>
         <tbody>
@@ -49,5 +49,5 @@
         }
         </tbody>
     </table>
-    <button type="submit" class="btn btn-danger" asp-page-handler="Delete">Delete selected</button>
+    <button type="submit" class="btn btn-danger" asp-page-handler="Delete">Delete selected Books</button>
 </form>
