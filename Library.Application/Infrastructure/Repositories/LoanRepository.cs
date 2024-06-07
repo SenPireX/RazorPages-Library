@@ -12,7 +12,7 @@ public class LoanRepository : Repository<Loan>
     {
         _logger = logger;
     }
-
+    
     public override (bool success, string message) Insert(Loan loan)
     {
         loan.LoanDate = DateTime.UtcNow;

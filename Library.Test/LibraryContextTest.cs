@@ -64,27 +64,3 @@ public class LibraryContextTest : DatabaseTest
         _testOutputHelper.WriteLine($"Generated {_db.Loans.EstimatedDocumentCount()} loans");
     }
 }
-
-
-/*public class LibraryContextTest : DatabaseTest
-{
-    [Fact]
-    public void EnsureCreatedSuccessTest()
-    {
-        _db.Database.EnsureCreated();
-    }
-
-    [Fact]
-    public void SeedSuccessTest()
-    {
-        _db.Database.EnsureCreated();
-        _db.Seed(new CryptService());
-
-        _db.ChangeTracker.Clear();
-        Assert.True(_db.Libraries.ToList().Count > 0);
-        Assert.True(_db.Books.ToList().Count > 0);
-        Assert.True(_db.Members.ToList().Count > 0);
-        Assert.True(_db.Librarians.ToList().Count > 0);
-        Assert.True(_db.Loans.ToList().Count > 0);
-    }
-}*/

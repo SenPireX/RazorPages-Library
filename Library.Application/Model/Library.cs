@@ -15,11 +15,12 @@ public class Library
     public ICollection<Book> Books { get; set; } = new List<Book>();
     public ICollection<Loan> Loans { get; set; } = new List<Loan>();
     
-    public Library(string name, List<Book> books, User? member = null)
+    public Library(string name, List<Book> books, List<Loan> loans, User? member = null)
     {
         Guid = Guid.NewGuid();
         Name = name;
         Books = books;
+        Loans = loans;
         Member = member;
     }
     

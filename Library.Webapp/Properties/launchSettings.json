@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "StoreManager.Webapp": {
+    "Library.Webapp": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,

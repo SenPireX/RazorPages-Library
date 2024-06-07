@@ -1,5 +1,6 @@
 ﻿using Library.Application.Model;
 using Microsoft.Extensions.Logging;
+using MongoDB.Driver;
 
 namespace Library.Application.Infrastructure.Repositories;
 
@@ -10,5 +11,5 @@ public class BookRepository : Repository<Book>
     {
         _logger = logger;
     }
-    
+
 }
