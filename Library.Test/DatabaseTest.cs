@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MongoDB.Driver;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace Library.Test;
 
@@ -20,7 +21,7 @@ public class DatabaseTest
         var config = new ConfigurationBuilder()
             .AddJsonFile(@"C:\Users\matea\Desktop\Coding\Library\Library.Webapp\appsettings.json")
             .Build();
-
+        
         _client = new MongoClient(config.GetConnectionString("MongoDb"));
         _db = new LibraryContext(config);
     }

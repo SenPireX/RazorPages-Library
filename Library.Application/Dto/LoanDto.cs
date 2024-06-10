@@ -1,10 +1,12 @@
-﻿namespace Library.Application.Dto;
+﻿using Library.Application.Model;
+
+namespace Library.Application.Dto;
 
 public record LoanDto(
     Guid Guid,
+    DateTime LoanDate, 
+    DateTime DueDate,
     Guid BookGuid,
     Guid LibraryGuid,
-    Guid MemberGuid,
-    DateTime LoanDate,
-    DateTime DueDate
+    Guid MemberGuid
 );

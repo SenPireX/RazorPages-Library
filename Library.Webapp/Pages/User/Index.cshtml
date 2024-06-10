@@ -2,27 +2,26 @@
 @model Library.Webapp.Pages.User.IndexModel
 <h3>User table</h3>
 
-<p>Diese Tabelle zeigt alle angelegten User (Admin Only).</p>
+<p>This table shows all created Users (Admin Only).</p>
 <table class="table table-sm">
     <thead>
-        <tr>
-            <th>Username</th>
-            <th>Type</th>
-            <th>Salt</th>
-            <th>Password Hash</th>
-        </tr>
+    <tr>
+        <th>Username</th>
+        <th>Type</th>
+        <th>Salt</th>
+        <th>Password Hash</th>
+    </tr>
     </thead>
     <tbody>
-        @foreach (var u in Model.Users)
-        {
-            <tr>
-                <td>@u.Username</td>
-                <td>@u.Usertype</td>
-                <td><pre>@u.Salt</pre></td>
-                <td><pre>@u.PasswordHash</pre></td>
-                <!--td>@string.Join(", ", u.Libraries.Select(s=>s.Name).OrderBy(s=>s))</!--td-->
-                <!--td>@string.Join(", ", u.Libraries.Select(l=> l.Name))</!--td-->
-            </tr>
-        }
+    @foreach (var u in Model.Users)
+    {
+        <tr>
+            <td>@u.Username</td>
+            <td>@u.Usertype</td>
+            <td><pre>@u.Salt</pre></td>
+            <td><pre>@u.PasswordHash</pre></td>
+            <!--td>@string.Join(", ", u.Libraries.Select(l => l.Name).OrderBy(l => l))</!--td-->
+        </tr>
+    }
     </tbody>
 </table>

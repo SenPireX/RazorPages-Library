@@ -16,6 +16,7 @@ builder.Services.AddTransient<LibraryRepository>();
 builder.Services.AddTransient<LoanRepository>();
 builder.Services.AddTransient<UserRepository>();
 builder.Services.AddTransient<BookRepository>();
+builder.Services.AddTransient<MemberRepository>();
 
 // * Services for authentication *******************************************************************
 // To access httpcontext in services

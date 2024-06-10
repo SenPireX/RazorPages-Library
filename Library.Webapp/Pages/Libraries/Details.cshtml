@@ -1,66 +1,36 @@
 ﻿@page "{guid}"
 @model Library.Webapp.Pages.Libraries.DetailsModel
 
-<h3>Details of Library @Model.Library.Name</h3>
-
-<h4>Loan a Book</h4>
-<form method="post" asp-page-handler="NewLoan">
-    <div class="row">
-        <div class="col-6">
-            <label asp-for="NewLoan.BookGuid">Book</label>
-            <select class="form-select" asp-items="@Model.BookSelectList" asp-for="NewLoan.BookGuid"></select>
-        </div>
-        <div class="col-6">
-            <label asp-for="NewLoan.DueDate">DueDate</label>
-            <input class="form-control" asp-for="NewLoan.DueDate" />
-            <small>
-                <span class="text-danger" asp-validation-for="NewLoan.DueDate"></span>
-            </small>
-        </div>
+@if (Model.Library is null)
+{
+    <div>
+        <h3>Library not found</h3>
     </div>
-    <div class="text-danger" asp-validation-summary=ModelOnly></div>
-    <button class="mt-2 btn btn-primary">Save</button>
-</form>
+}
+else
+{
+    <h3>@Model.Library.Name</h3>
 
-<h4>Loaned Books</h4>
-<form method="post" asp-page-handler="EditLoan">
+    <h4>Loans List</h4>
     <table class="table table-sm">
         <thead>
         <tr>
-            <th>FirstName</th>
-            <th>LastName</th>
             <th>Book</th>
+            <th>Member Name</th>
+            <th>LoanDate</th>
             <th>DueDate</th>
-            <th>Action</th>
-            <th>Delete</th>
         </tr>
         </thead>
         <tbody>
-        @foreach (var l in Model.Loans.OrderBy(l => l.Book.Title))
+        @foreach (var l in Model.Library.Loans.OrderBy(l => l.LoanDate))
         {
-        <tr>
-            <td>@l.Member?.FirstName</td>
-            <td>@l.Member?.LastName</td>
-            <td>@l.Book?.Title</td>
-            <td>
-                <input type="hidden" asp-for="EditLoans[l.Guid].Guid"/>
-                <input class="form-control" asp-for="EditLoans[l.Guid].DueDate" />
-                <small>
-                    <span class="text-danger" asp-validation-for="EditLoans[l.Guid].DueDate"></span>
-                </small>
-            </td>
-            <td>
-                <input class="form-check-input" asp-for="EditLoans[l.Guid].LoanDate" />
-            </td>
-            <td>
-                <button class="btn btn-primary" type="submit" asp-page-handler="EditLoan" asp-route-loanGuid="@l.Guid">Save</button>
-            </td>
-            <td>
-                <input class="form-check-input" asp-for="LoansToDelete[l.Guid]" />
-            </td>
-        </tr>
+            <tr>
+                <td>@l.Book.Title</td>
+                <td>@(l.Member.FirstName + " " + l.Member.LastName)</td>
+                <td>@l.LoanDate.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                <td>@l.DueDate.ToString("yyyy-MM-dd HH:mm:ss")</td>
+            </tr>
         }
         </tbody>
     </table>
-    <button type="submit" class="btn btn-danger" asp-page-handler="Delete">Delete selected</button>
-</form>
+}

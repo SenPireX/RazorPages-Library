@@ -44,4 +44,11 @@ public class LoanRepository : Repository<Loan>
             dueDate: dueDate
         ));
     }
+
+    public IEnumerable<Loan> GetLoansByLibrary(Guid libraryGuid)
+    {
+        var stringLibraryGuid = libraryGuid.ToString();
+        return _collection.Find(l => l.LibraryGuid.ToString() == stringLibraryGuid).ToList();
+    }
+    
 }

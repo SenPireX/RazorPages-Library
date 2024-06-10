@@ -13,7 +13,7 @@ public class LibraryRepository : Repository<Model.Library>
         string Name,
         //List<Book> Books,
         int BooksCount,
-        User? Member
+        User? Manager
     );
 
     private readonly ILogger<Model.Library> _logger;
@@ -38,7 +38,7 @@ public class LibraryRepository : Repository<Model.Library>
                 { "Name", 1 },
                 //{ "Books", 1 },
                 { "BooksCount" , new BsonDocument( "$size", "$Books") },
-                { "Member", 1 }
+                { "Manager", 1 }
             })
             .ToList();
         
@@ -53,9 +53,9 @@ public class LibraryRepository : Repository<Model.Library>
                     Name: doc["Name"].AsString,
                     //Books: booksList,
                     BooksCount: doc["BooksCount"].AsInt32,
-                    Member: doc.Contains("Member") && doc["Member"].IsBsonNull
+                    Manager: doc.Contains("Manager") && doc["Manager"].IsBsonNull
                         ? null
-                        : BsonSerializer.Deserialize<User>(doc["Member"].AsBsonDocument)
+                        : BsonSerializer.Deserialize<User>(doc["Manager"].AsBsonDocument)
                 );
             })
             .ToList();

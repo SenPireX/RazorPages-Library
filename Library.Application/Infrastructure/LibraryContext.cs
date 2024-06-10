@@ -1,6 +1,7 @@
 ﻿using Bogus;
 using Library.Application.Model;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 
 namespace Library.Application.Infrastructure;
@@ -30,6 +31,7 @@ public class LibraryContext
     {
         Randomizer.Seed = new Random(1887);
 
+        // Create admin user
         var adminSalt = cryptService.GenerateSecret(256);
         var admin = new User
         (
@@ -40,30 +42,35 @@ public class LibraryContext
         );
         Users.InsertOne(admin);
 
-        var members = new Faker<Member>("en").CustomInstantiator(f => new Member(
-                firstName: f.Name.FirstName(),
-                lastName: f.Name.LastName(),
-                address: f.Address.FullAddress(),
-                email: f.Person.Email,
-                phoneNumber: f.Phone.PhoneNumber("+##-###-#######")
-            ))
+        // Create members
+        var members = new Faker<Member>("en").CustomInstantiator(f =>
+                new Member(
+                    firstName: f.Name.FirstName(),
+                    lastName: f.Name.LastName(),
+                    address: f.Address.FullAddress(),
+                    email: f.Person.Email,
+                    phoneNumber: f.Phone.PhoneNumber("+##-###-#######")
+                ))
             .Generate(80)
             .ToList();
         Members.InsertMany(members);
 
-        var librarians = new Faker<Librarian>("en").CustomInstantiator(f => new Librarian(
-                firstName: f.Name.FirstName(),
-                lastName: f.Name.LastName(),
-                address: f.Address.FullAddress(),
-                email: f.Person.Email,
-                phoneNumber: f.Phone.PhoneNumber("+##-###-#######")
-            ))
+        // Create librarians
+        var librarians = new Faker<Librarian>("en").CustomInstantiator(f =>
+                new Librarian(
+                    firstName: f.Name.FirstName(),
+                    lastName: f.Name.LastName(),
+                    address: f.Address.FullAddress(),
+                    email: f.Person.Email,
+                    phoneNumber: f.Phone.PhoneNumber("+##-###-#######")
+                ))
             .Generate(20)
             .ToList();
         Librarians.InsertMany(librarians);
 
-        
+        // Create libraries and books and loans
         var books = new List<Book>();
+        var loans = new List<Loan>();
         var i = 0;
         var libraries = new Faker<Model.Library>("en").CustomInstantiator(f =>
             {
@@ -71,35 +78,71 @@ public class LibraryContext
                 var salt = cryptService.GenerateSecret(256);
                 var username = $"library{++i:000}";
 
-                var member = new User
+                var manager = new User
                 (
                     username: username,
                     salt: salt,
                     passwordHash: cryptService.GenerateHash(key: salt, "1234"),
                     usertype: Usertype.Owner
                 );
-                Users.InsertOne(member);
+                Users.InsertOne(manager);
 
                 var library = new Model.Library
                 (
                     name: name,
                     books: [],
                     loans: [],
-                    member: member
+                    manager: manager
                 );
 
-                var booksList = new Faker<Book>("en").CustomInstantiator(faker => new Book(
-                        libraryGuid: library.Guid,
-                        title: faker.Random.Words(2),
-                        author: faker.Name.FullName(),
-                        genre: faker.PickRandom<BookGenre>(),
-                        publishedDate: faker.Date.PastDateOnly()
-                    ))
+                manager.Libraries.Add(library);
+
+                var booksList = new Faker<Book>("en").CustomInstantiator(faker =>
+                        new Book(
+                            libraryGuid: library.Guid,
+                            title: faker.Random.Words(2),
+                            author: faker.Name.FullName(),
+                            genre: faker.PickRandom<BookGenre>(),
+                            publishedDate: faker.Date.PastDateOnly()
+                        ))
                     .Generate(f.Random.Int(20, 50))
                     .ToList();
 
                 books.AddRange(booksList);
                 library.Books = booksList;
+
+                var libraryLoans = new Faker<Loan>("en").CustomInstantiator(faker1 =>
+                    {
+                        var member = f.Random.ListItem(members);
+                        var loanDate = faker1.Date.Recent();
+                        var dueDate = loanDate.AddDays(14);
+                        Book book;
+                        
+                        do
+                        {
+                            book = f.Random.ListItem(booksList);
+                        } 
+                        while (book.IsLoaned);
+                        
+                        book.IsLoaned = true;
+                        Books.ReplaceOne(b => b.Guid == book.Guid, book);
+
+                        var loan = new Loan
+                        (
+                            book: book,
+                            library: library,
+                            member: member,
+                            loanDate: loanDate,
+                            dueDate: dueDate
+                        );
+
+                        loans.Add(loan);
+                        return loan;
+                    })
+                    .Generate(f.Random.Int(5, 10))
+                    .ToList();
+
+                library.Loans = libraryLoans;
 
                 return library;
             })
@@ -107,26 +150,26 @@ public class LibraryContext
             .ToList();
         Libraries.InsertMany(libraries);
         Books.InsertMany(books);
+        Loans.InsertMany(loans);
 
-        var loans = new Faker<Loan>("en").CustomInstantiator(f =>
+        // Create loans
+        /*var loans = new Faker<Loan>("en").CustomInstantiator(f =>
             {
                 var library = f.Random.ListItem(libraries);
+                var member = f.Random.ListItem(members);
+                var loanDate = DateTime.UtcNow;
+                var dueDate = loanDate.AddDays(14);
                 Book book;
-                
+
                 do
                 {
                     book = f.Random.ListItem(books);
                 }
                 while (book.IsLoaned);
-                
-                book.IsLoaned = true;
-                
-                var member = f.Random.ListItem(members);
-                var loanDate = DateTime.UtcNow;
-                var dueDate = loanDate.AddDays(14);
 
+                book.IsLoaned = true;
                 Books.ReplaceOne(b => b.Guid == book.Guid, book);
-                
+
                 var loan = new Loan(
                     book: book,
                     library: library,
@@ -135,16 +178,29 @@ public class LibraryContext
                     dueDate: dueDate
                 );
 
+                var loansList = new Faker<Loan>("en").CustomInstantiator(faker =>
+                        new Loan(
+                            book: book,
+                            library: library,
+                            member: member,
+                            loanDate: loanDate,
+                            dueDate: dueDate
+                        ))
+                    .Generate(f.Random.Int(20, 50))
+                    .ToList();
+
                 library.Loans.Add(loan);
+                library.Loans = loans;
                 return loan;
             })
             .Generate(80)
             .ToList();
-        Loans.InsertMany(loans);
-        
-        foreach (var library in libraries)
-        {
-            Libraries.ReplaceOne(l => l.Guid == library.Guid, library);
-        }
+        Loans.InsertMany(loans);*/
+
+        // Update libraries with new loans
+        /* foreach (var library in libraries)
+         {
+             Libraries.ReplaceOne(l => l.Guid == library.Guid, library);
+         }*/
     }
 }

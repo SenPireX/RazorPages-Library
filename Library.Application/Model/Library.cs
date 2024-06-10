@@ -11,17 +11,17 @@ public class Library
     
     [BsonId] [BsonRepresentation(BsonType.String)] public Guid Guid { get; private set; }
     [MaxLength(32)] public string Name { get; set; }
-    public User? Member { get; set; }
+    public User? Manager { get; set; }
     public ICollection<Book> Books { get; set; } = new List<Book>();
     public ICollection<Loan> Loans { get; set; } = new List<Loan>();
     
-    public Library(string name, List<Book> books, List<Loan> loans, User? member = null)
+    public Library(string name, ICollection<Book> books, ICollection<Loan> loans, User? manager = null)
     {
         Guid = Guid.NewGuid();
         Name = name;
         Books = books;
         Loans = loans;
-        Member = member;
+        Manager = manager;
     }
     
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.

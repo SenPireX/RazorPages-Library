@@ -1,0 +1,50 @@
+﻿@page "{guid}"
+@model Library.Webapp.Pages.Libraries.AddModel
+
+<h3>Library @Model.Library.Name</h3>
+
+<h4>Loan a Book</h4>
+<form method="post" asp-page-handler="NewLoan">
+    <div class="row">
+        <div class="col-6">
+            <label asp-for="NewLoan.BookGuid">Book</label>
+            <select class="form-select" asp-items="@Model.BookSelectList" asp-for="NewLoan.BookGuid"></select>
+        </div>
+        <div class="col-6">
+            <label asp-for="NewLoan.DueDate">Due Date</label>
+            <input class="form-control" asp-for="NewLoan.DueDate"/>
+            <small>
+                <span class="text-danger" asp-validation-for="NewLoan.DueDate"></span>
+            </small>
+        </div>
+    </div>
+    <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+    <button class="mt-2 btn btn-primary">Save</button>
+</form>
+
+<h4>Loans</h4>
+<table class="table table-sm">
+    <thead>
+    <tr>
+        <th>Member</th>
+        <th>-</th>
+        <th>Email</th>
+        <th>Book</th>
+        <th>Loan Date</th>
+        <th>Due Date</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var loan in Model.Loans)
+    {
+        <tr>
+            <td>@loan.Member.FirstName</td>
+            <td>@loan.Member.LastName</td>
+            <td>@loan.Member.Email</td>
+            <td>@loan.Book.Title</td>
+            <td>@loan.LoanDate.ToString("dd.MM.yyyy")</td>
+            <td>@loan.DueDate.ToString("dd.MM.yyyy")</td>
+        </tr>
+    }
+    </tbody>
+</table>

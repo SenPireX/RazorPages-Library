@@ -29,5 +29,5 @@ public class IndexModel : PageModel
     
     public bool CanEditLibrary(Guid libraryGuid) =>
         _authService.IsAdmin
-        || Libraries.FirstOrDefault(l => l.Guid == libraryGuid)?.Member?.Username == _authService.Username;
+        || Libraries.FirstOrDefault(l => l.Guid == libraryGuid)?.Manager?.Username == _authService.Username;
 }

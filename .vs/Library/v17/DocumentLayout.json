@@ -1,0 +1,71 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\matea\\Desktop\\Coding\\Library\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{781B79D5-5F84-4113-924E-1E3BA8BBB319}|Library.Application\\Library.Application.csproj|c:\\users\\matea\\desktop\\coding\\library\\library.application\\infrastructure\\repositories\\libraryrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{781B79D5-5F84-4113-924E-1E3BA8BBB319}|Library.Application\\Library.Application.csproj|solutionrelative:library.application\\infrastructure\\repositories\\libraryrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E9AD4E85-47DF-4AC8-BDF0-2F8BC0CC29A7}|Library.Webapp\\Library.Webapp.csproj|c:\\users\\matea\\desktop\\coding\\library\\library.webapp\\pages\\libraries\\add.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E9AD4E85-47DF-4AC8-BDF0-2F8BC0CC29A7}|Library.Webapp\\Library.Webapp.csproj|solutionrelative:library.webapp\\pages\\libraries\\add.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E9AD4E85-47DF-4AC8-BDF0-2F8BC0CC29A7}|Library.Webapp\\Library.Webapp.csproj|c:\\users\\matea\\desktop\\coding\\library\\library.webapp\\pages\\libraries\\add.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E9AD4E85-47DF-4AC8-BDF0-2F8BC0CC29A7}|Library.Webapp\\Library.Webapp.csproj|solutionrelative:library.webapp\\pages\\libraries\\add.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "LibraryRepository.cs",
+              "DocumentMoniker": "C:\\Users\\matea\\Desktop\\Coding\\Library\\Library.Application\\Infrastructure\\Repositories\\LibraryRepository.cs",
+              "RelativeDocumentMoniker": "Library.Application\\Infrastructure\\Repositories\\LibraryRepository.cs",
+              "ToolTip": "C:\\Users\\matea\\Desktop\\Coding\\Library\\Library.Application\\Infrastructure\\Repositories\\LibraryRepository.cs",
+              "RelativeToolTip": "Library.Application\\Infrastructure\\Repositories\\LibraryRepository.cs",
+              "ViewState": "AQIAADIAAAAAAAAAAAAwwE8AAABTAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-09T23:01:14.295Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Add.cshtml",
+              "DocumentMoniker": "C:\\Users\\matea\\Desktop\\Coding\\Library\\Library.Webapp\\Pages\\Libraries\\Add.cshtml",
+              "RelativeDocumentMoniker": "Library.Webapp\\Pages\\Libraries\\Add.cshtml",
+              "ToolTip": "C:\\Users\\matea\\Desktop\\Coding\\Library\\Library.Webapp\\Pages\\Libraries\\Add.cshtml",
+              "RelativeToolTip": "Library.Webapp\\Pages\\Libraries\\Add.cshtml",
+              "ViewState": "AQIAABgAAAAAAAAAAAAgwDAAAAAMAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-06-09T22:50:25.753Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Add.cshtml.cs",
+              "DocumentMoniker": "C:\\Users\\matea\\Desktop\\Coding\\Library\\Library.Webapp\\Pages\\Libraries\\Add.cshtml.cs",
+              "RelativeDocumentMoniker": "Library.Webapp\\Pages\\Libraries\\Add.cshtml.cs",
+              "ToolTip": "C:\\Users\\matea\\Desktop\\Coding\\Library\\Library.Webapp\\Pages\\Libraries\\Add.cshtml.cs",
+              "RelativeToolTip": "Library.Webapp\\Pages\\Libraries\\Add.cshtml.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABAAAAAmAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-09T22:50:24.029Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
