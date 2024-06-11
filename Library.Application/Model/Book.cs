@@ -15,6 +15,7 @@ public class Book
     public BookGenre Genre { get; set; }
     public DateOnly PublishedDate { get; set; }
     public bool IsLoaned { get; set; }
+    
     [BsonIgnore] public Library Library { get; set; }
 
 

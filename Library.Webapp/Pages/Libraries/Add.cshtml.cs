@@ -9,10 +9,10 @@ using Library.Application.Infrastructure.Repositories;
 using Library.Application.Model;
 using Library.Webapp.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using MongoDB.Driver;
+using Microsoft.EntityFrameworkCore;
 
 namespace Library.Webapp.Pages.Libraries;
 
@@ -25,7 +25,8 @@ public class AddModel : PageModel
     private readonly AuthService _authService;
     private readonly IMapper _mapper;
 
-    public AddModel(IMapper mapper, LibraryRepository library, LoanRepository loan, BookRepository book, MemberRepository member, AuthService authService)
+    public AddModel(IMapper mapper, LibraryRepository library, LoanRepository loan, BookRepository book,
+        MemberRepository member, AuthService authService)
     {
         _mapper = mapper;
         _library = library;
@@ -38,62 +39,64 @@ public class AddModel : PageModel
     [FromRoute] public Guid Guid { get; private set; }
     [BindProperty] public LoanDto NewLoan { get; set; } = default!;
     public Application.Model.Library Library { get; private set; } = default!;
-
+    public Dictionary<Guid, LoanDto> EditLoans { get; set; } = new();
+    public Dictionary<Guid, bool> LoansToDelete { get; set; } = new();
     public IReadOnlyList<Loan> Loans { get; set; } = new List<Loan>();
 
-    //[BindProperty] public Dictionary<Guid, LoanDto> EditLoans { get; set; } = new();
+    public IEnumerable<SelectListItem> BookSelectList =>
+        _book.Set.OrderBy(b => b.Title).Select(b => new SelectListItem(b.Title, b.Guid.ToString()));
 
-    // public Dictionary<Guid, bool> LoansToDelete { get; set; } = new();
-    // public IEnumerable<SelectListItem> BookSelectList => _books.Set.OrderBy(b => b.Title)
-    //.Select(b => new SelectListItem(b.Title, b.Guid.ToString()));
-
-    public SelectList BookSelectList { get; set; } = default!;
-
-    public IActionResult OnGet(Guid guid)
-    {
-        Library = _library.FindByGuid(guid);
-        if (Library is null)
-        {
-            return RedirectToPage("/Libraries/Index");
-        }
-
-        Loans = _loan.GetLoansByLibrary(guid).ToList();
-        var availableBooks = _book.GetAvailableBooks(guid).ToList();
-        BookSelectList = new SelectList(availableBooks, "Guid", "Title");
-
-        return Page();
-    }
-
-    public IActionResult OnPostNewLoan(Guid guid)
+    /*public IActionResult OnPostNewLoan(Guid guid, LoanDto newLoan)
     {
         if (!ModelState.IsValid)
         {
             return Page();
         }
 
-        var library = _library.FindByGuid(guid);
-        var book = _book.FindByGuid(NewLoan.BookGuid);
-        var member = _member.GetMemberByGuid(NewLoan.MemberGuid);
+        var (success, message) = _loan
+            .Insert();
 
-        if (library is null || book is null || member is null)
+        if (!success)
         {
-            return RedirectToPage("/Libraries/Index");
         }
 
-        var loan = new Loan
-        (
-            book,
-            library,
-            member,
-            loanDate: DateTime.UtcNow,
-            dueDate: NewLoan.DueDate
-        );
-
-        book.IsLoaned = true;
-        _book.Update(book, book.Guid);
-        _loan.Insert(loan);
-
         return RedirectToPage();
+    }*/
+
+    public IActionResult OnGet(Guid guid)
+    {
+        return Page();
+    }
+
+    public override void OnPageHandlerExecuting(PageHandlerExecutingContext context)
+    {
+        var library = _library.Set
+            .Include(l => l.Loans)
+            .ThenInclude(l => l.Book)
+            .Include(l => l.Loans)
+            .ThenInclude(l => l.Member)
+            .FirstOrDefault(l => l.Guid == Guid);
+
+        if (library is null)
+        {
+            context.Result = RedirectToPage("/Stores/Index");
+            return;
+        }
+
+        Library = library;
+        LoansToDelete = library.Loans.ToDictionary(l => l.Guid, l => false);
+        var loans = _loan.Set
+            .Where(l => l.Guid == Guid)
+            .Select(l => new LoanDto(
+                l.Guid,
+                l.LoanDate,
+                l.DueDate,
+                l.BookGuid,
+                l.LibraryGuid
+            ))
+            .ToList();
+
+        EditLoans = loans.ToDictionary(l => l.Guid, l => l);
     }
 }
 

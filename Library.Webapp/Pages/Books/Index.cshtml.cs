@@ -10,7 +10,7 @@ using Library.Application.Model;
 
 namespace Library.Webapp.Pages.Books
 {
-    [Authorize(Roles = "Admin,Owner")]
+    [Authorize(Roles = "Admin, Owner")]
     public class IndexModel : PageModel
     {
         private readonly BookRepository _books;

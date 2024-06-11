@@ -1,36 +1,29 @@
 ﻿@page "{guid}"
 @model Library.Webapp.Pages.Libraries.DetailsModel
 
-@if (Model.Library is null)
-{
-    <div>
-        <h3>Library not found</h3>
-    </div>
-}
-else
-{
-    <h3>@Model.Library.Name</h3>
+<h3>@Model.Library.Name</h3>
 
-    <h4>Loans List</h4>
-    <table class="table table-sm">
-        <thead>
+<h4>Loans List</h4>
+<table class="table table-sm">
+    <thead>
+    <tr>
+        <th>Book</th>
+        <th>Member</th>
+        <th>-</th>
+        <th>LoanDate</th>
+        <th>DueDate</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var l in Model.Library.Loans.OrderBy(l => l.LoanDate))
+    {
         <tr>
-            <th>Book</th>
-            <th>Member Name</th>
-            <th>LoanDate</th>
-            <th>DueDate</th>
+            <td>@l.Book.Title</td>
+            <td>@l.Member.FirstName</td>
+            <td>@l.Member.LastName</td>
+            <td>@l.LoanDate.ToString("yyyy-MM-dd HH:mm:ss")</td>
+            <td>@l.DueDate.ToString("yyyy-MM-dd HH:mm:ss")</td>
         </tr>
-        </thead>
-        <tbody>
-        @foreach (var l in Model.Library.Loans.OrderBy(l => l.LoanDate))
-        {
-            <tr>
-                <td>@l.Book.Title</td>
-                <td>@(l.Member.FirstName + " " + l.Member.LastName)</td>
-                <td>@l.LoanDate.ToString("yyyy-MM-dd HH:mm:ss")</td>
-                <td>@l.DueDate.ToString("yyyy-MM-dd HH:mm:ss")</td>
-            </tr>
-        }
-        </tbody>
-    </table>
-}
+    }
+    </tbody>
+</table>

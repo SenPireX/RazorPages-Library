@@ -18,8 +18,7 @@ namespace Library.Webapp.Services
         private readonly ICryptService _crypt;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public AuthService(bool isDevelopment,
-            LibraryContext db, ICryptService crypt, IHttpContextAccessor httpContextAccessor)
+        public AuthService(bool isDevelopment, LibraryContext db, ICryptService crypt, IHttpContextAccessor httpContextAccessor)
         {
             _isDevelopment = isDevelopment;
             _db = db;
@@ -50,7 +49,6 @@ namespace Library.Webapp.Services
             {
                 new Claim(ClaimTypes.Name, username),
                 new Claim(ClaimTypes.Role, role),
-                //new Claim("Userdata", JsonSerializer.Serialize(currentUser)),
             };
             var claimsIdentity = new ClaimsIdentity(
                 claims,
@@ -72,15 +70,7 @@ namespace Library.Webapp.Services
         public string? Username => HttpContext.User.Identity?.Name;
         public bool HasRole(string role) => HttpContext.User.IsInRole(role);
         public bool IsAdmin => HttpContext.User.IsInRole(Application.Model.Usertype.Admin.ToString());
-
         public Task LogoutAsync() => HttpContext.SignOutAsync();
-        //public Userdata? Userdata
-        //{
-        //    get
-        //    {
-        //        var userdata = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "Userdata")?.Value;
-        //        return string.IsNullOrEmpty(userdata) ? null : JsonSerializer.Deserialize<Userdata>(userdata);
-        //    }
-        //}
+        
     }
 }

@@ -11,25 +11,17 @@ namespace Library.Webapp.Pages.User
     public class IndexModel : PageModel
     {
         private readonly UserRepository _users;
-        private readonly ILogger<IndexModel> _logger;
 
-        public IndexModel(UserRepository users, ILogger<IndexModel> logger)
+        public IndexModel(UserRepository users)
         {
             _users = users;
-            _logger = logger;
         }
-
-        public IEnumerable<Application.Model.User> Users { get; private set; } =
-            [];
         
-        public void OnGet()
-        {
-            Users = _users.Set
-                .Include(u => u.Libraries)
-                .OrderBy(u => u.Usertype)
-                .ThenBy(u => u.Username)
-                .ToList();
-            
-        }
+        public IEnumerable<Application.Model.User> Users => _users.Set
+            .Include(u => u.Libraries)
+            .OrderBy(u => u.Usertype)
+            .ThenBy(u => u.Username);
+        
+        public void OnGet() {}
     }
 }
